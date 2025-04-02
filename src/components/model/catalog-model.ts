@@ -1,6 +1,7 @@
-import { IProduct, IApiProvider, ICatalog } from '../types/index'
-import { ApiListResponse } from '../components/base/api'
-import { EventEmitter } from '../components/base/events';
+import { IProduct, IApiProvider, ICatalog } from '../../types/index'
+import { ApiListResponse } from '../base/api'
+import { EventEmitter } from '../base/events';
+import { settings } from '../../utils/constants';
 
 export class CatalogModel implements ICatalog{
     private _products: IProduct[] = [];
@@ -16,7 +17,7 @@ export class CatalogModel implements ICatalog{
         try {
             const response = await this.api.get('/api/weblarek/product') as ApiListResponse<IProduct>
             this._products = response.items
-            this.eventEmitter.emit('catalog:updated', this._products);
+            this.eventEmitter.emit(settings.updateCatalog, this._products);
         } catch(error) {
             console.log(error);
         }

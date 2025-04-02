@@ -1,15 +1,14 @@
-import { IProduct } from "../types/index";
-import { View } from "../types/view";
+import { IProduct } from "../../types/index";
+import { IView } from "../../types/index";
 import { CardCatalogView } from "./card-catalog-view";
-import { EventEmitter } from "./base/events";
+import { EventEmitter } from "../base/events";
 
-export class CatalogView extends View<IProduct[]> {
+export class CatalogView implements IView<IProduct[]> {
     private container: HTMLElement;
     private eventEmitter: EventEmitter;
     private cardView: CardCatalogView;
 
     constructor(eventEmitter: EventEmitter) {
-        super();
         this.container = document.querySelector('.gallery') as HTMLElement;
         this.eventEmitter = eventEmitter;
         this.cardView = new CardCatalogView(eventEmitter);

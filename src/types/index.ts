@@ -32,5 +32,5 @@ export interface IOrder {
 }
 
 export interface IView<T> {
-    render(data?: T): HTMLElement;
+    render(data?: T, ...args: any[]): HTMLElement | void;
 }
