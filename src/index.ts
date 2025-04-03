@@ -10,10 +10,16 @@ import { CatalogView } from './components/view/catalog-view';
 import { BasketModel } from './components/model/basket-model';
 import { BasketModalView } from './components/view/basket-modal-view';
 
+enum CurrentModalType { //возможно enum избыточен, но так читабельнее
+    Basket = 'basket',
+    Card = 'card',
+    Order = 'order'
+}
+let currentModalType: CurrentModalType //чтобы корректно работали модальные окна
+
 const api = new Api(process.env.API_ORIGIN)
 const eventEmitter = new EventEmitter()
 const modalView = new ModalView()
-let currentModalType: 'basket' | 'card' | null; //чтобы корректно работали модальные окна
 
 const cardModalView = new CardModalView(eventEmitter, modalView)
 
@@ -36,9 +42,10 @@ eventEmitter.on(settings.updateCatalog, (products: IProduct[]) => {
 
 //Открытие карточки
 eventEmitter.on(settings.selectProduct, (product: IProduct) => {
+    currentModalType = CurrentModalType.Card;
     const isInBasket = basketModel.hasItem(product)
-    currentModalType = 'card';
-    cardModalView.render(product, isInBasket)
+    const cardModalElement = cardModalView.render(product, isInBasket)
+    modalView.render(cardModalElement)
     modalView.open()
 })
 
@@ -58,14 +65,18 @@ eventEmitter.on(settings.removeFromBasket, (product: IProduct) => {
 
 eventEmitter.on(settings.updateBasket, (products: IProduct[]) => {
     basketCounter.textContent = `${products.length}`
-    if (currentModalType === 'basket') {
-        basketModalView.render(products, basketModel.totalPrice);
+    if (currentModalType === CurrentModalType.Basket) {
+        const basketModalElement = basketModalView.render(products, basketModel.totalPrice);
+        modalView.render(basketModalElement)
     }
 })
 
 eventEmitter.on(settings.openBasket, () => {
-    currentModalType = 'basket';
-    basketModalView.render(basketModel.getItems(), basketModel.totalPrice)
+    currentModalType = CurrentModalType.Basket;
+    const basketModalElement = basketModalView.render(basketModel.getItems(), basketModel.totalPrice)
+    modalView.render(basketModalElement)
     modalView.open()
 })
 
+
+//Заказ

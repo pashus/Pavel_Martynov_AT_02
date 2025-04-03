@@ -15,7 +15,7 @@ export class BasketModalView implements IView<IProduct[]>{
         this.modal = modal
     }
 
-    render(data: IProduct[], totalPrice: number): void {
+    render(data: IProduct[], totalPrice: number): HTMLElement {
         const basket = this.template.content.firstElementChild.cloneNode(true) as HTMLElement;
         const list = basket.querySelector('.basket__list')
         const price = basket.querySelector('.basket__price')
@@ -28,6 +28,6 @@ export class BasketModalView implements IView<IProduct[]>{
             list.appendChild(cardElement)
         })
         
-        this.modal.render(basket)
+        return basket;
     }
 }

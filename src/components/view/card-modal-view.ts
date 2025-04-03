@@ -20,7 +20,7 @@ export class CardModalView implements IView<IProduct>{
         this.modal = modal
     }
 
-    render(data: IProduct, isInBasket: boolean): void {
+    render(data: IProduct, isInBasket: boolean): HTMLElement {
         const card = this.template.content.firstElementChild.cloneNode(true) as HTMLElement;
         const title = card.querySelector('.card__title') as HTMLElement;
         const image = card.querySelector('.card__image') as HTMLImageElement;
@@ -53,6 +53,6 @@ export class CardModalView implements IView<IProduct>{
             }
         });
         
-        this.modal.render(card)
+        return card;
     }
 }
