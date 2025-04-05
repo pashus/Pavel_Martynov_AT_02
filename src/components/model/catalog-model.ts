@@ -4,7 +4,7 @@ import { EventEmitter } from '../base/events';
 import { settings } from '../../utils/constants';
 
 export class CatalogModel implements ICatalog{
-    private _products: IProduct[] = [];
+    private products: IProduct[] = [];
     private api: IApiProvider;
     private eventEmitter: EventEmitter;
 
@@ -16,20 +16,20 @@ export class CatalogModel implements ICatalog{
     async fillCatalog(): Promise<void> {
         try {
             const response = await this.api.get('/api/weblarek/product') as ApiListResponse<IProduct>
-            this._products = response.items
-            this.eventEmitter.emit(settings.updateCatalog, this._products);
+            this.products = response.items
+            this.eventEmitter.emit(settings.updateCatalog, this.products);
         } catch(error) {
             console.log(error);
         }
     }
 
     getProductById(id: string): IProduct {
-        return this._products.find(product => {
+        return this.products.find(product => {
             return product.id === id;
         })
     }
 
-    get products(): IProduct[] {
-        return this._products;
+    getProducts(): IProduct[] {
+        return this.products;
     }
 }

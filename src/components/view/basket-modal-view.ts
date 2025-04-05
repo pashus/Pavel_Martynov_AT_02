@@ -1,33 +1,42 @@
 import { IProduct } from "../../types/index";
 import { EventEmitter } from "../base/events";
-import { ModalView } from "./modal-view";
 import { CardBasketView } from "./card-basket-view";
 import { IView } from "../../types/index";
+import { settings } from "../../utils/constants";
 
 export class BasketModalView implements IView<IProduct[]>{
     private template: HTMLTemplateElement;
     private eventEmitter: EventEmitter;
-    private modal: ModalView;
+    private cardView: CardBasketView;
 
-    constructor(eventEmitter: EventEmitter, modal: ModalView) {
-        this.template = document.querySelector('#basket')
-        this.eventEmitter = eventEmitter
-        this.modal = modal
+    constructor(eventEmitter: EventEmitter) {
+        this.template = document.querySelector('#basket');
+        this.eventEmitter = eventEmitter;
+        this.cardView = new CardBasketView(eventEmitter);
     }
 
     render(data: IProduct[], totalPrice: number): HTMLElement {
         const basket = this.template.content.firstElementChild.cloneNode(true) as HTMLElement;
         const list = basket.querySelector('.basket__list')
         const price = basket.querySelector('.basket__price')
-        const cardView = new CardBasketView(this.eventEmitter)
+        const orderButton = basket.querySelector('.basket__button') as HTMLButtonElement;
         
         price.textContent = `${totalPrice} синапсов`
         
-        data.forEach((product, index) => {
-            const cardElement = cardView.render(product, index+1)
-            list.appendChild(cardElement)
-        })
-        
+        if (data.length === 0) {
+            orderButton.disabled = true;
+        } else {
+            data.forEach((product, index) => {
+                const cardElement = this.cardView.render(product, index+1)
+                //тут вот тоже ситуация как с карточками католога
+                list.appendChild(cardElement)
+            })
+    
+            orderButton.addEventListener('click', () => {
+                this.eventEmitter.emit(settings.openOrder)
+            })
+        }
+
         return basket;
     }
 }

@@ -1,7 +1,3 @@
-export interface IApiProvider {
-    get(uri: string): Promise<any>;
-}
-
 export interface IProduct {
     id: string;
     title: string;
@@ -11,26 +7,39 @@ export interface IProduct {
     image: string;
 }
 
+export interface IOrder {
+    setOrderData(data: IOrderData): void;
+    sendOrder(): Promise<void>;
+}
+
+export interface IOrderData {
+    address?: string;
+    paymentMethod?: string;
+    email?: string;
+    phone?: string;
+    items?: IProduct[];
+    totalPrice?: number;
+}
+
 export interface ICatalog {
-    readonly products: IProduct[];
     fillCatalog(): Promise<void>;
     getProductById(id: string): IProduct;
+    getProducts(): IProduct[];
 }
 
 export interface IBasket {
-    readonly totalPrice: number;
-    addItem(product: IProduct): void; 
+    addItem(product: IProduct): void;
     removeItem(product: IProduct): void;
-}
-
-export interface IOrder {
-    totalPrice: number;
-    deliveryAddress: string;
-    paymentMethod: string;
-    phone: string;
-    email: string;
+    getItems(): IProduct[];
+    hasItem(product: IProduct): boolean;
+    getTotalPrice(): number;
 }
 
 export interface IView<T> {
     render(data?: T, ...args: any[]): HTMLElement;
+}
+
+export interface IApiProvider {
+    get(uri: string): Promise<any>;
+    post(uri: string, data: object): Promise<any>;
 }

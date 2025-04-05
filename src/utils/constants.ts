@@ -7,7 +7,11 @@ export const settings = {
     openBasket: 'basket:open',
     addToBasket: 'basket:add',
     removeFromBasket: 'basket:remove',
-    updateBasket: 'basket:updated'
+    updateBasket: 'basket:updated',
+    openOrder: 'order:open',
+    orderDataConfirmed: 'order:data',
+    contactsDataConfirmed: 'contacts:data',
+    closeSuccess: 'success:close'
 };
 
 export const categoryClassMap: Record<string, string> = {

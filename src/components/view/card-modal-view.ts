@@ -1,5 +1,4 @@
 import { IProduct } from "../../types";
-import { ModalView } from "./modal-view";
 import { EventEmitter } from "../base/events";
 import { CDN_URL, colorCategory, settings } from "../../utils/constants";
 import { IView } from "../../types/index";
@@ -12,12 +11,10 @@ enum ButtonStatus {
 export class CardModalView implements IView<IProduct>{
     private template: HTMLTemplateElement;
     private eventEmitter: EventEmitter;
-    private modal: ModalView;
 
-    constructor(eventEmitter: EventEmitter, modal: ModalView) {
+    constructor(eventEmitter: EventEmitter) {
         this.template = document.querySelector('#card-preview')
         this.eventEmitter = eventEmitter
-        this.modal = modal
     }
 
     render(data: IProduct, isInBasket: boolean): HTMLElement {
@@ -35,6 +32,7 @@ export class CardModalView implements IView<IProduct>{
         category.textContent = data.category;
         colorCategory(category, data)
         text.textContent = data.description;
+        
         if (data.price === null) {
             price.textContent = 'Бесценно'
             button.setAttribute('disabled', 'true')

@@ -15,10 +15,12 @@ export class CatalogView implements IView<IProduct[]> {
     }
 
     render(data: IProduct[]): HTMLElement {
-        this.container.innerHTML = '';
-
         data.forEach(product => {
             const card = this.cardView.render(product);
+            //если честно, не до конца понял, под каждую карточку
+            //нужен отдельный экземпляр или нет. потому что у нас же
+            //просто отображение, карточки как самостоятельные
+            //единицы не используются
             this.container.appendChild(card);
         });
 

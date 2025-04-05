@@ -1,4 +1,4 @@
-import { IProduct, IBasket } from '../../types/index'
+import { IBasket, IProduct } from '../../types/index'
 import { settings } from '../../utils/constants';
 import { EventEmitter } from "../base/events";
 
@@ -29,8 +29,13 @@ export class BasketModel implements IBasket{
         return this.items.has(product.id);
     }
     
-    get totalPrice(): number {
+    getTotalPrice(): number {
         return Array.from(this.items.values())
             .reduce((acc, product) => acc + product.price, 0);
+    }
+
+    clearItems() {
+        this.items.clear();
+        this.eventEmitter.emit(settings.updateBasket, this.getItems());
     }
 }

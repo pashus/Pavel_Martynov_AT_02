@@ -1,7 +1,7 @@
 export class ModalView {
-    protected modal: HTMLElement;
-    protected content: HTMLElement;
-    protected closeButton: HTMLButtonElement;
+    private modal: HTMLElement;
+    private content: HTMLElement;
+    private closeButton: HTMLButtonElement;
 
     constructor() {
         this.modal = document.querySelector('#modal-container')
