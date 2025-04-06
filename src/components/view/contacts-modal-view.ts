@@ -1,14 +1,14 @@
 import { IOrderData, IView } from "../../types";
 import { settings } from "../../utils/constants";
-import { EventEmitter } from "../base/events";
+import { IEvents } from "../base/events";
 
 export class ContactsModalView implements IView<any> {
     private template: HTMLTemplateElement;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
     private savedEmail: string;
     private savedPhone: string;
 
-    constructor(eventEmitter: EventEmitter) {
+    constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#contacts');
         this.eventEmitter = eventEmitter;
         this.savedEmail = '';

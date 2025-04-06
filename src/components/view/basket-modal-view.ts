@@ -1,15 +1,15 @@
 import { IProduct } from "../../types/index";
-import { EventEmitter } from "../base/events";
+import { IEvents } from "../base/events";
 import { CardBasketView } from "./card-basket-view";
 import { IView } from "../../types/index";
 import { settings } from "../../utils/constants";
 
 export class BasketModalView implements IView<IProduct[]>{
     private template: HTMLTemplateElement;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
     private cardView: CardBasketView;
 
-    constructor(eventEmitter: EventEmitter) {
+    constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#basket');
         this.eventEmitter = eventEmitter;
         this.cardView = new CardBasketView(eventEmitter);

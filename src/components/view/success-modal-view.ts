@@ -1,21 +1,20 @@
 import { IView } from "../../types";
 import { settings } from "../../utils/constants";
-import { EventEmitter } from "../base/events";
-
+import { IEvents } from "../base/events";
 
 export class SuccessModalView implements IView<any> {
     private template: HTMLTemplateElement;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
 
-    constructor(eventEmitter: EventEmitter) {
+    constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#success');
         this.eventEmitter = eventEmitter;
     }
 
     render(totalValue: number): HTMLElement {
-        const succsess = this.template.content.firstElementChild.cloneNode(true) as HTMLFormElement;
-        const value = succsess.querySelector('.order-success__description')
-        const button = succsess.querySelector('.order-success__close')
+        const success = this.template.content.firstElementChild.cloneNode(true) as HTMLFormElement;
+        const value = success.querySelector('.order-success__description')
+        const button = success.querySelector('.order-success__close')
         
         value.textContent = `Списано ${totalValue} синапсов`
         
@@ -23,6 +22,6 @@ export class SuccessModalView implements IView<any> {
             this.eventEmitter.emit(settings.closeSuccess)
         })
 
-        return succsess
+        return success
     }
 }

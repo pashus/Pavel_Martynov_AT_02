@@ -1,14 +1,14 @@
 import { IOrderData as IOrderData, IView } from "../../types";
 import { settings } from "../../utils/constants";
-import { EventEmitter } from "../base/events";
+import { IEvents } from "../base/events";
 
 export class OrderModalView implements IView<any> {
     private template: HTMLTemplateElement;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
     private savedAddress: string;
     private savedPaymentMethod: 'online' | 'offline' | null = null;
 
-    constructor(eventEmitter: EventEmitter) {
+    constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#order');
         this.eventEmitter = eventEmitter;
         this.savedAddress = '';

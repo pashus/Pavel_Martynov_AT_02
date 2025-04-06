@@ -1,14 +1,14 @@
 import { IProduct, IApiProvider, ICatalog } from '../../types/index'
 import { ApiListResponse } from '../base/api'
-import { EventEmitter } from '../base/events';
+import { IEvents } from '../base/events';
 import { settings } from '../../utils/constants';
 
 export class CatalogModel implements ICatalog{
     private products: IProduct[] = [];
     private api: IApiProvider;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
 
-    constructor(api: IApiProvider, eventEmitter: EventEmitter) {
+    constructor(api: IApiProvider, eventEmitter: IEvents) {
         this.api = api;
         this.eventEmitter = eventEmitter;
     }

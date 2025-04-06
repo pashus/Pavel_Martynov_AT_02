@@ -33,6 +33,7 @@ export interface IBasket {
     getItems(): IProduct[];
     hasItem(product: IProduct): boolean;
     getTotalPrice(): number;
+    clearItems(): void;
 }
 
 export interface IView<T> {

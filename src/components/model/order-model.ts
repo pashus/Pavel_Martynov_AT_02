@@ -1,5 +1,5 @@
 import { IApiProvider, IOrder, IOrderData, IProduct } from "../../types";
-import { EventEmitter } from "../base/events";
+import { IEvents } from "../base/events";
 
 export class OrderModel implements IOrder{
     private items: IProduct[];
@@ -9,9 +9,9 @@ export class OrderModel implements IOrder{
     private email: string;
     private phone: string;
     private api: IApiProvider;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
 
-    constructor(api: IApiProvider, eventEmitter: EventEmitter) {
+    constructor(api: IApiProvider, eventEmitter: IEvents) {
         this.api = api;
         this.eventEmitter = eventEmitter;
     }

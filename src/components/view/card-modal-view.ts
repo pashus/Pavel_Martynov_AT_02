@@ -1,5 +1,5 @@
 import { IProduct } from "../../types";
-import { EventEmitter } from "../base/events";
+import { IEvents } from "../base/events";
 import { CDN_URL, colorCategory, settings } from "../../utils/constants";
 import { IView } from "../../types/index";
 
@@ -10,9 +10,9 @@ enum ButtonStatus {
 
 export class CardModalView implements IView<IProduct>{
     private template: HTMLTemplateElement;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
 
-    constructor(eventEmitter: EventEmitter) {
+    constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#card-preview')
         this.eventEmitter = eventEmitter
     }

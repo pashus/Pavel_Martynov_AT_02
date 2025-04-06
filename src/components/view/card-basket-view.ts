@@ -1,13 +1,13 @@
 import { IProduct } from "../../types/index";
 import { IView } from "../../types/index";
 import { settings } from "../../utils/constants";
-import { EventEmitter } from "../base/events";
+import { IEvents } from "../base/events";
 
 export class CardBasketView implements IView<IProduct> {
     private template: HTMLTemplateElement;
-    private eventEmitter: EventEmitter;
+    private eventEmitter: IEvents;
 
-    constructor(eventEmitter: EventEmitter) {
+    constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#card-basket')
         this.eventEmitter = eventEmitter
     }

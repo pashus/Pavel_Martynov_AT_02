@@ -12,14 +12,14 @@ import { BasketModalView } from './components/view/basket-modal-view';
 import { OrderModalView } from './components/view/order-modal-view';
 import { OrderModel } from './components/model/order-model';
 import { ContactsModalView } from './components/view/contacts-modal-view';
-import { SuccessModalView } from './components/view/succsess-modal-view';
+import { SuccessModalView } from './components/view/success-modal-view';
 
 enum CurrentModalType { //возможно enum избыточен, но так читабельнее
     Basket = 'basket',
     Card = 'card',
     Order = 'order',
     Contacts = 'contacts',
-    Success = 'succsess'
+    Success = 'success'
 };
 let currentModalType: CurrentModalType; //чтобы корректно работали модальные окна
 
