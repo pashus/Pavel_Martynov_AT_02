@@ -34,7 +34,7 @@ export class BasketModel implements IBasket{
             .reduce((acc, product) => acc + product.price, 0);
     }
 
-    clearItems() {
+    clearItems(): void {
         this.items.clear();
         this.eventEmitter.emit(settings.updateBasket, this.getItems());
     }
