@@ -6,21 +6,17 @@ import { IEvents } from "../base/events";
 export class CatalogView implements IView<IProduct[]> {
     private container: HTMLElement;
     private eventEmitter: IEvents;
-    private cardView: CardCatalogView;
 
     constructor(eventEmitter: IEvents) {
         this.container = document.querySelector('.gallery') as HTMLElement;
         this.eventEmitter = eventEmitter;
-        this.cardView = new CardCatalogView(eventEmitter);
     }
 
     render(data: IProduct[]): HTMLElement {
         data.forEach(product => {
-            const card = this.cardView.render(product);
-            //если честно, не до конца понял, под каждую карточку
-            //нужен отдельный экземпляр или нет. потому что у нас же
-            //просто отображение, карточки как самостоятельные
-            //единицы не используются
+            const cardView = new CardCatalogView(this.eventEmitter)
+            const card = cardView.render(product);
+            
             this.container.appendChild(card);
         });
 

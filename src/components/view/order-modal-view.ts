@@ -6,7 +6,13 @@ export class OrderModalView implements IView<any> {
     private template: HTMLTemplateElement;
     private eventEmitter: IEvents;
     private savedAddress: string;
-    private savedPaymentMethod: 'online' | 'offline' | null = null;
+    private order: HTMLFormElement;
+    private address: HTMLInputElement;
+    private cardButton: HTMLButtonElement;
+    private cashButton: HTMLButtonElement;
+    private continueButton: HTMLButtonElement;
+    private error: HTMLSpanElement;
+    private paymentMethod: 'online' | 'offline' | null = null;
 
     constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#order');
@@ -15,65 +21,77 @@ export class OrderModalView implements IView<any> {
     }
 
     render(): HTMLElement {
-        const order = this.template.content.firstElementChild.cloneNode(true) as HTMLFormElement;
-        let paymentMethod: 'online' | 'offline' | null = null;
-        const address = order.querySelector('input[name="address"]') as HTMLInputElement;
-        const cardButton = order.querySelector('button[name="card"]');
-        const cashButton = order.querySelector('button[name="cash"]');
-        const continueButton = order.querySelector('.order__button') as HTMLButtonElement;
+        this.order = this.template.content.firstElementChild.cloneNode(true) as HTMLFormElement;
+        this.address = this.order.querySelector('input[name="address"]') as HTMLInputElement;
+        this.cardButton = this.order.querySelector('button[name="card"]') as HTMLButtonElement;
+        this.cashButton = this.order.querySelector('button[name="cash"]') as HTMLButtonElement;
+        this.continueButton = this.order.querySelector('.order__button') as HTMLButtonElement;
+        this.error = this.order.querySelector('.form__errors') as HTMLSpanElement;
         
-        paymentMethod = this.savedPaymentMethod;
-        address.value = this.savedAddress;
-
-        if (this.savedPaymentMethod === 'online') {
-            cardButton.classList.add('button_alt-active');
-        } else if (this.savedPaymentMethod === 'offline') {
-            cashButton.classList.add('button_alt-active');
+        this.address.value = this.savedAddress;
+        if (this.paymentMethod === 'online') {
+            this.cardButton.classList.add('button_alt-active');
+        } else if (this.paymentMethod === 'offline') {
+            this.cashButton.classList.add('button_alt-active');
         }
 
-        cardButton.addEventListener('click', () => {
-            paymentMethod = 'online'
-            this.savedPaymentMethod = paymentMethod
-            cardButton.classList.add('button_alt-active')
-            cashButton.classList.remove('button_alt-active')
-            updateContinueButton();
-        })
+        this.setEventListeners();
+        this.updateContinueButton();
 
-        cashButton.addEventListener('click', () => {
-            paymentMethod = 'offline'
-            this.savedPaymentMethod = paymentMethod
-            cashButton.classList.add('button_alt-active')
-            cardButton.classList.remove('button_alt-active')
-            updateContinueButton();
-        })
-        
-        address.addEventListener('input', () => {
-            this.savedAddress = address.value;
-            updateContinueButton();
+        return this.order
+    }
+
+    private setEventListeners(): void {
+        this.cardButton.addEventListener('click', () => {
+            this.paymentMethod = 'online'
+            this.cardButton.classList.add('button_alt-active')
+            this.cashButton.classList.remove('button_alt-active')
+            this.updateContinueButton();
         });
 
-        continueButton.addEventListener('click', (evt) => {
+        this.cashButton.addEventListener('click', () => {
+            this.paymentMethod = 'offline'
+            this.cashButton.classList.add('button_alt-active')
+            this.cardButton.classList.remove('button_alt-active')
+            this.updateContinueButton();
+        });
+        
+        this.address.addEventListener('input', () => {
+            this.savedAddress = this.address.value;
+            this.updateContinueButton();
+        });
+
+        this.continueButton.addEventListener('click', (evt) => {
             evt.preventDefault()
             this.eventEmitter.emit(settings.orderDataConfirmed, {
-                address: address.value,
-                paymentMethod: paymentMethod
+                address: this.address.value,
+                paymentMethod: this.paymentMethod
             } as IOrderData)
-        })
+        });
+    }
 
-        function updateContinueButton() {
-            if (paymentMethod !== null && address.value.trim() !== '') {
-                continueButton.disabled = false;
-            } else {
-                continueButton.disabled = true;
-            }
+    private updateContinueButton(): void {
+        if (this.paymentMethod !== null && this.address.value.trim() !== '') {
+            this.continueButton.disabled = false;
+        } else {
+            this.continueButton.disabled = true;
         };
-        updateContinueButton();
 
-        return order;
+        this.error.textContent = this.validationError()
+    }
+
+    private validationError(): string {
+        if (this.paymentMethod === null) {
+            return 'Выберите способ оплаты';
+        }
+        if (this.address.value.trim() === '') {
+            return 'Введите адрес';
+        }
+        return '';
     }
 
     reset() {
         this.savedAddress = '';
-        this.savedPaymentMethod = null;
+        this.paymentMethod = null;
     }
 }

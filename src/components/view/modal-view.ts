@@ -4,27 +4,27 @@ export class ModalView {
     private closeButton: HTMLButtonElement;
 
     constructor() {
-        this.modal = document.querySelector('#modal-container')
-        this.content = this.modal.querySelector('.modal__content')
-        this.closeButton = this.modal.querySelector('.modal__close')
+        this.modal = document.querySelector('#modal-container') as HTMLElement;
+        this.content = this.modal.querySelector('.modal__content') as HTMLElement; 
+        this.closeButton = this.modal.querySelector('.modal__close') as HTMLButtonElement;
     
-        this.closeButton.addEventListener('click', () => this.close())
+        this.closeButton.addEventListener('click', () => this.close());
         this.modal.addEventListener('click', evt => {
             if (evt.target === this.modal) {
-                this.close()
+                this.close();
             }
-        })
+        });
     }
 
     open(): void {
-        this.modal.classList.add('modal_active')
+        this.modal.classList.add('modal_active');
     }
 
     close(): void {
-        this.modal.classList.remove('modal_active')
+        this.modal.classList.remove('modal_active');
     }
 
     render(modal: HTMLElement): void {
-        this.content.replaceChildren(modal)
+        this.content.replaceChildren(modal);
     }
 } 

@@ -5,6 +5,9 @@ import { IEvents } from "../base/events";
 export class SuccessModalView implements IView<any> {
     private template: HTMLTemplateElement;
     private eventEmitter: IEvents;
+    private success: HTMLElement;
+    private value: HTMLParagraphElement;
+    private button: HTMLButtonElement;
 
     constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#success');
@@ -12,16 +15,20 @@ export class SuccessModalView implements IView<any> {
     }
 
     render(totalValue: number): HTMLElement {
-        const success = this.template.content.firstElementChild.cloneNode(true) as HTMLFormElement;
-        const value = success.querySelector('.order-success__description')
-        const button = success.querySelector('.order-success__close')
+        this.success = this.template.content.firstElementChild.cloneNode(true) as HTMLFormElement;
+        this.value = this.success.querySelector('.order-success__description') as HTMLParagraphElement;
+        this.button = this.success.querySelector('.order-success__close') as HTMLButtonElement;
         
-        value.textContent = `Списано ${totalValue} синапсов`
+        this.value.textContent = `Списано ${totalValue} синапсов`;
         
-        button.addEventListener('click', () => {
-            this.eventEmitter.emit(settings.closeSuccess)
-        })
+        this.setEventListeners();
 
-        return success
+        return this.success;
+    }
+
+    private setEventListeners(): void {
+        this.button.addEventListener('click', () => {
+            this.eventEmitter.emit(settings.closeSuccess)
+        });
     }
 }

@@ -6,29 +6,40 @@ import { IEvents } from "../base/events";
 export class CardBasketView implements IView<IProduct> {
     private template: HTMLTemplateElement;
     private eventEmitter: IEvents;
+    private item: HTMLLIElement;
+    private index: HTMLSpanElement;
+    private title: HTMLSpanElement;
+    private price: HTMLSpanElement;
+    private deleteButton: HTMLButtonElement;
+    private product: IProduct;
 
     constructor(eventEmitter: IEvents) {
-        this.template = document.querySelector('#card-basket')
-        this.eventEmitter = eventEmitter
+        this.template = document.querySelector('#card-basket');
+        this.eventEmitter = eventEmitter;
     }
 
     render(data: IProduct, indexForItem: number): HTMLElement {
-        const item = this.template.content.firstElementChild.cloneNode(true) as HTMLElement;
-        const index = item.querySelector('.basket__item-index') as HTMLElement;
-        const title = item.querySelector('.card__title') as HTMLSpanElement;
-        const price = item.querySelector('.card__price') as HTMLElement;
-        const deleteButton = item.querySelector('.basket__item-delete') as HTMLElement;
+        this.product = data;
+        this.item = this.template.content.firstElementChild.cloneNode(true) as HTMLLIElement;
+        this.index = this.item.querySelector('.basket__item-index') as HTMLSpanElement;
+        this.title = this.item.querySelector('.card__title') as HTMLSpanElement;
+        this.price = this.item.querySelector('.card__price') as HTMLSpanElement;
+        this.deleteButton = this.item.querySelector('.basket__item-delete') as HTMLButtonElement;
     
-        index.textContent = indexForItem.toString()
-        title.textContent = data.title
-        price.textContent = data.price === null
+        this.index.textContent = indexForItem.toString();
+        this.title.textContent = data.title;
+        this.price.textContent = data.price === null
             ? 'Бесценно'
             : `${data.price} синапсов`;
 
-        deleteButton.addEventListener('click', () => {
-            this.eventEmitter.emit(settings.removeFromBasket, data)
-        })
+        this.setEventListeners();
 
-        return item;
+        return this.item;
+    }
+
+    private setEventListeners(): void {
+        this.deleteButton.addEventListener('click', () => {
+            this.eventEmitter.emit(settings.removeFromBasket, this.product);
+        });
     }
 }

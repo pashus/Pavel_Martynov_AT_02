@@ -7,18 +7,18 @@ export class BasketModel implements IBasket{
     private eventEmitter: IEvents;
 
     constructor(eventEmitter: IEvents) {
-        this.eventEmitter = eventEmitter
+        this.eventEmitter = eventEmitter;
     }
     
     addItem(product: IProduct): void {
         this.items.set(product.id, product)
-        this.eventEmitter.emit(settings.updateBasket, this.getItems())
+        this.eventEmitter.emit(settings.updateBasket, this.getItems());
     }
 
     removeItem(product: IProduct): void {
         if (this.items.size === 0) return;
         this.items.delete(product.id)
-        this.eventEmitter.emit(settings.updateBasket, this.getItems())
+        this.eventEmitter.emit(settings.updateBasket, this.getItems());
     }
 
     getItems(): IProduct[] {

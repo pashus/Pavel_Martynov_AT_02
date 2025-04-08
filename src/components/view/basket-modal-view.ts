@@ -7,36 +7,42 @@ import { settings } from "../../utils/constants";
 export class BasketModalView implements IView<IProduct[]>{
     private template: HTMLTemplateElement;
     private eventEmitter: IEvents;
-    private cardView: CardBasketView;
+    private basket: HTMLElement;
+    private list: HTMLUListElement;
+    private price: HTMLSpanElement;
+    private orderButton: HTMLButtonElement;
 
     constructor(eventEmitter: IEvents) {
         this.template = document.querySelector('#basket');
         this.eventEmitter = eventEmitter;
-        this.cardView = new CardBasketView(eventEmitter);
     }
 
     render(data: IProduct[], totalPrice: number): HTMLElement {
-        const basket = this.template.content.firstElementChild.cloneNode(true) as HTMLElement;
-        const list = basket.querySelector('.basket__list')
-        const price = basket.querySelector('.basket__price')
-        const orderButton = basket.querySelector('.basket__button') as HTMLButtonElement;
+        this.basket = this.template.content.firstElementChild.cloneNode(true) as HTMLUListElement;
+        this.list = this.basket.querySelector('.basket__list') as HTMLUListElement;
+        this.price = this.basket.querySelector('.basket__price') as HTMLSpanElement;
+        this.orderButton = this.basket.querySelector('.basket__button') as HTMLButtonElement;
         
-        price.textContent = `${totalPrice} синапсов`
+        this.price.textContent = `${totalPrice} синапсов`;
         
         if (data.length === 0) {
-            orderButton.disabled = true;
+            this.orderButton.disabled = true;
         } else {
             data.forEach((product, index) => {
-                const cardElement = this.cardView.render(product, index+1)
-                //тут вот тоже ситуация как с карточками католога
-                list.appendChild(cardElement)
-            })
-    
-            orderButton.addEventListener('click', () => {
-                this.eventEmitter.emit(settings.openOrder)
-            })
+                const cardView = new CardBasketView(this.eventEmitter)
+                const cardElement = cardView.render(product, index+1)
+                this.list.appendChild(cardElement)
+            });
         }
 
-        return basket;
+        this.setEventListeners();
+
+        return this.basket;
+    }
+
+    private setEventListeners(): void {
+        this.orderButton.addEventListener('click', () => {
+            this.eventEmitter.emit(settings.openOrder);
+        });
     }
 }
