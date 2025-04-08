@@ -17,7 +17,26 @@ export class OrderModel implements IOrder{
     }
 
     setOrderData(data: IOrderData): void {
-
+        //проверки, потому что данные разные и берутся как из формы 
+        //заказа, так и из формы контактов
+        if (data.paymentMethod) {
+            this.paymentMethod = data.paymentMethod;
+        }
+        if (data.address) {
+            this.deliveryAddress = data.address;
+        }
+        if (data.email) {
+            this.email = data.email;
+        }
+        if (data.phone) {
+            this.phone = data.phone;
+        }
+        if (data.items) {
+            this.items = data.items;
+        }
+        if (data.totalPrice !== undefined) {
+            this.totalPrice = data.totalPrice;
+        }
     }
 
     sendOrder(): Promise<void> {
