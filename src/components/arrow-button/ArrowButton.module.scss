@@ -14,8 +14,13 @@
   cursor: pointer;
 }
 
+.container:hover {
+	background-color: #FFC802;
+}
+
 .container_open {
   transform: translate(616px);
+  background-color: #787878;
 }
 
 .arrow {
